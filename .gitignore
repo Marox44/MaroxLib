@@ -46,6 +46,7 @@ local.properties
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+*.bat
 
 
 # Build results
