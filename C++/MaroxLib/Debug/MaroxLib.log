@@ -1,0 +1,21 @@
+﻿Build started 2015-07-01 20:26:15.
+     1>Project "F:\GIT\MaroxLib\MaroxLib\MaroxLib.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /doc"Debug\\" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         Source.cpp
+     1>f:\git\maroxlib\maroxlib\threads.hpp(21): warning C4635: XML document comment applied to 'Marox.Threading.THREAD': badly-formed XML: Only one top level element is allowed in an XML document.
+         
+     1>f:\git\maroxlib\maroxlib\other.hpp(40): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\time.inl(112) : see declaration of 'localtime'
+     1>f:\git\maroxlib\maroxlib\time.hpp(39): warning C4244: 'return' : conversion from '__int64' to 'double', possible loss of data
+     1>f:\git\maroxlib\maroxlib\time.hpp(50): warning C4244: 'return' : conversion from '__int64' to 'double', possible loss of data
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"F:\GIT\MaroxLib\Debug\MaroxLib.lib" /NOLOGO Debug\Source.obj
+         MaroxLib.vcxproj -> F:\GIT\MaroxLib\Debug\MaroxLib.lib
+       XdcMake:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\xdcmake.exe /old "MaroxLib" /nologo /Fo"F:\GIT\MaroxLib\Debug\MaroxLib.xml" /FsDebug\Source.xdc
+     1>Done Building Project "F:\GIT\MaroxLib\MaroxLib\MaroxLib.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.30

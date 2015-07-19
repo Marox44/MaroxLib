@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{7e02299b-9f97-41c2-88e7-eec3c01d21d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTTP Wrapper">
+      <UniqueIdentifier>{1016b35f-d232-47f5-b454-e25e63953049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Threading">
+      <UniqueIdentifier>{02c70d4d-a181-47ec-8294-3986242df62d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="autostart.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="convert.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="http.hpp">
+      <Filter>HTTP Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="threads.hpp">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="time.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="all.hpp" />
+    <ClInclude Include="other.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+</Project>
