@@ -41,6 +41,13 @@ local.properties
 *.user
 *.sln.docstates
 
+# moje1
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+
 # Build results
 
 [Dd]ebug/
