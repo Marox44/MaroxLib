@@ -8,6 +8,7 @@
 
 #include "RegExp.h"
 #include <Windows.h>
+#include <wincrypt.h>
 #include <iostream>
 #include <string>
 #include <comutil.h>

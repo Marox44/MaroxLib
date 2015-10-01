@@ -4,7 +4,6 @@
 #include <map>
 #include <sstream>
 
-using namespace Marox;
 
 namespace Marox
 {
@@ -31,6 +30,7 @@ namespace Marox
 			{
 				client = new WinHttpClient(Tools::Convert::string_to_wstring(_url));
 			}
+			client->SetTimeouts(0U, 20000U, 30000U, 20000U);
 			client->SendHttpRequest();
 			Response res(Tools::Convert::wstring_to_string(client->GetResponseHeader()), Tools::Convert::wstring_to_string(client->GetResponseContent()));
 			delete client;

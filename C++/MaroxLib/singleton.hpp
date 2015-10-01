@@ -24,6 +24,7 @@ namespace Marox
 	template<typename T>
 	typename T* Singleton<T>::m_instance = nullptr;
 
+
 	template<typename T>
 	template<typename... Args>
 	T* Singleton<T>::getInstance(Args... args)

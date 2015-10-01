@@ -49,7 +49,7 @@ namespace Marox
 		template<typename Fn, typename... Args>
 		static std::thread* CreateThreadFromFunction(Fn& fn, Args... args)
 		{
-			return new std::thread(fn, args...);
+			return (new std::thread(fn, args...));
 		}
 		/// <summary>
 		/// Provides interface for derived class making it able to run specified method in separated thread.
@@ -127,7 +127,7 @@ namespace Marox
 			THREAD(THREAD&&) = delete;
 			THREAD& operator=(const THREAD&) = delete;
 			THREAD& operator=(THREAD&&) = delete;
-			virtual ~THREAD() final = default;
+			virtual ~THREAD() = default;
 			/// <summary>
 			/// Starts the thread.
 			/// </summary>
@@ -224,7 +224,7 @@ namespace Marox
 			/// <remarks>
 			/// If your thread works as the e.g loop, you should check the state of <c>isThreadRunning</c> flag inside your method implementation. (see <c>THREAD</c> example code)
 			/// </remarks>
-			virtual void run(){}
+			virtual void run() = 0;
 
 		private:
 			std::thread T;
