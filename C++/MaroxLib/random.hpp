@@ -15,6 +15,14 @@ namespace Marox
 				std::mt19937 g(rd());
 				std::shuffle(std::begin(_collection), std::end(_collection), g);
 			}
+			template<typename Iterator>
+			void randomizeCollection(Iterator first, Iterator last)
+			{
+				std::random_device rd;
+				std::mt19937 g(rd());
+				std::shuffle(first, last, g);
+			}
+
 
 			double rand(double range_from, double range_to)
 			{

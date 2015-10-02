@@ -103,7 +103,9 @@ namespace CPP_UNIT_TESTS
 			int values2[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 			Marox::Tools::Random::randomizeCollection(values);
+			Marox::Tools::Random::randomizeCollection(values.begin(), values.end());
 			Marox::Tools::Random::randomizeCollection(values2);
+
 
 			int sum = 0;
 			for (const auto& i : values)
