@@ -51,6 +51,15 @@ namespace Marox
 		{
 			return (new std::thread(fn, args...));
 		}
+				void Sleep(unsigned int _ms)
+				{
+						std::this_thread::sleep_for(std::chrono::milliseconds(_ms));
+				}
+
+				unsigned int getNumberOfCores()
+				{
+						return std::thread::hardware_concurrency();
+				}
 		/// <summary>
 		/// Provides interface for derived class making it able to run specified method in separated thread.
 		/// </summary>
@@ -214,6 +223,11 @@ namespace Marox
 			static void Sleep(unsigned int _ms)
 			{
 				std::this_thread::sleep_for(std::chrono::milliseconds(_ms));
+			}
+
+			static unsigned int getNumberOfCores()
+			{
+				return std::thread::hardware_concurrency();
 			}
 
 		protected:

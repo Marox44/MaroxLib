@@ -6,6 +6,8 @@
 #include "tools.hpp"
 #include "singleton.hpp"
 #include "time.hpp"
-#include "dll.hpp"
 #include "random.hpp"
 #include "md5.hpp"
+
+#include "dll.hpp"
+#include "dll_i.hpp"

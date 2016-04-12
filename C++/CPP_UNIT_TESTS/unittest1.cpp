@@ -1,20 +1,19 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-
 #include "..\MaroxLib\all.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-
-
 struct dog
 {
 	dog() = default;
+	dog(const std::string& _name) : name(_name)
+	{}
 	~dog() = default;
 
 	int age = 5;
-	const std::string name = "Azor";
+	std::string name = "Azor";
 };
 
 namespace Microsoft
@@ -55,12 +54,13 @@ namespace CPP_UNIT_TESTS
 		TEST_METHOD(rand_int)
 		{
 			std::vector<int> numbers;
-			for (size_t i = 0; i < 1000; i++)
+			for (size_t i = 0; i < 10000; i++)
 			{
-				numbers.push_back(Marox::Tools::Random::rand(1, 100));
+				numbers.push_back(Marox::Tools::Random::rand(1, 10));
 			}
 			bool range = true;
 			bool type = true;
+			bool limitValues[2]{false, false};
 			for (const auto& i : numbers)
 			{
 				if (!(i >= 1 && i <= 100))
@@ -71,10 +71,20 @@ namespace CPP_UNIT_TESTS
 				{
 					type = false;
 				}
+				if (i == 1)
+				{
+					limitValues[0] = true;
+				}
+				if (i == 10)
+				{
+					limitValues[1] = true;
+				}
 			}
 
 			Assert::IsTrue(range, L"range error");
 			Assert::IsTrue(type, L"type error");
+			Assert::IsTrue(limitValues[0], L"limitValues error");
+			Assert::IsTrue(limitValues[1], L"limitValues error");
 		}
 
 		TEST_METHOD(rand_double)
@@ -106,7 +116,6 @@ namespace CPP_UNIT_TESTS
 			Marox::Tools::Random::randomizeCollection(values.begin(), values.end());
 			Marox::Tools::Random::randomizeCollection(values2);
 
-
 			int sum = 0;
 			for (const auto& i : values)
 			{
@@ -119,7 +128,6 @@ namespace CPP_UNIT_TESTS
 
 			Assert::AreEqual(sum, 45 * 2, L"sum error");
 		}
-
 	};
 
 	TEST_CLASS(Singleton)
@@ -150,8 +158,13 @@ namespace CPP_UNIT_TESTS
 			dog* a = Marox::Singleton<dog>::getInstance();
 			dog* b = Marox::Singleton<dog>::getInstance();
 
+			Marox::Singleton<dog>::destroy();
+			dog* c = Marox::Singleton<dog>::getInstance("Burek");
+
 			Assert::AreEqual(a, b, L"1");
 			Assert::AreSame(*a, *b, L"2");
+			Assert::AreEqual(c->name.c_str(), "Burek", L"3");
+			Assert::AreEqual(a->name, c->name, L"4");
 		}
 	};
 
@@ -195,7 +208,6 @@ namespace CPP_UNIT_TESTS
 			file.close();
 
 			auto m4 = Marox::Tools::MD5::hashFile(_f);
-
 
 			Assert::AreEqual(m1, m2, L"1");
 			Assert::AreEqual(m2, m3, L"2");
@@ -278,12 +290,13 @@ namespace CPP_UNIT_TESTS
 			std::string s1 = "1.2.3.4";
 			std::string s2 = fvi1.ToString();
 			std::string s3 = fvi2->ToString();
-
+			std::string s4 = std::string(fvi1);
 
 			Assert::AreEqual(fvi1, *fvi2, L"2");
 			Assert::AreEqual(s1, s2, L"3");
 			Assert::AreEqual(s2, s3, L"4");
-			Assert::IsTrue((fvi1 == *fvi2), L"5");
+			Assert::AreEqual(s3, s4, L"5");
+			Assert::IsTrue((fvi1 == *fvi2), L"6");
 		}
 
 		TEST_METHOD(fvi_operators)
@@ -309,11 +322,81 @@ namespace CPP_UNIT_TESTS
 			Logger::WriteMessage(max->ToString().c_str());
 			Logger::WriteMessage(min->ToString().c_str());
 
-
 			Assert::AreEqual(*max, fvi7, L"1");
 			Assert::AreEqual(*min, fvi1, L"2");
 			Assert::IsTrue(isSorted, L"3");
 			Assert::IsTrue(((fvi2 > fvi1) && (fvi3 > fvi2) && (fvi2<fvi4) && (fvi7>fvi6)), L"4");
+		}
+	};
+
+	TEST_CLASS(tools)
+	{
+	public:
+		TEST_METHOD(index_of_element)
+		{
+			std::vector<int> vec = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+			int index_1 = Marox::Tools::getIndexOfElement(vec.begin(), vec.end(), 2);
+			int index_0 = Marox::Tools::getIndexOfElement(vec.begin(), vec.end(), 1);
+			int index_9 = Marox::Tools::getIndexOfElement(vec.begin(), vec.end(), 10);
+			int index_n = Marox::Tools::getIndexOfElement(vec.begin(), vec.end(), 11);
+
+			Assert::AreEqual(index_1, 1, L"1");
+			Assert::AreEqual(index_0, 0, L"2");
+			Assert::AreEqual(index_9, 9, L"3");
+			Assert::AreEqual(index_n, -1, L"4");
+		}
+
+		TEST_METHOD(is_int)
+		{
+			std::vector<std::string> vec_correct =
+			{
+				"10", "0", "-1", "-1000", "1000", "44", "1"
+			};
+			std::vector<std::string> vec_incorrect =
+			{
+				"1.0", "0.0", "-1.0", "-1.000", "100.0", "4.4", "1,", ".0", "0.", "12.5", "-0.0", "-0.5", "Ala ma kota", " ", ".", ",", ".1", "-", "_"
+			};
+
+			bool assert_1 = true;
+			bool assert_2 = true;
+
+			for (auto& i : vec_correct)
+			{
+				if (!Marox::Tools::isInt(i))
+				{
+					assert_1 = false;
+				}
+			}
+			for (auto& i : vec_incorrect)
+			{
+				if (Marox::Tools::isInt(i))
+				{
+					assert_2 = false;
+				}
+			}
+
+			Assert::IsTrue(assert_1, L"1");
+			Assert::IsTrue(assert_2, L"2");
+		}
+
+		TEST_METHOD(if_file_exists)
+		{
+			std::string filePath = Marox::Tools::getTemporaryFile();
+			std::fstream file = std::fstream(filePath);
+			file << "Jestem plikiem?";
+			file.close();
+
+			Assert::IsTrue(Marox::Tools::ifFileExists(filePath), L"1");
+			Assert::IsTrue(Marox::Tools::ifFileExists(Marox::Tools::getTemporaryFile()), L"2");
+		}
+
+		TEST_METHOD(get_temporary_file)
+		{
+			std::string f1 = Marox::Tools::getTemporaryFile();
+			std::string f2 = Marox::Tools::getTemporaryFile();
+
+			Assert::AreNotEqual(f1, f2, L"1");
 		}
 	};
 }

@@ -10,18 +10,22 @@
 #include <random>
 #include <Windows.h>
 #include <tlhelp32.h>
+#include <Shlwapi.h>
 #include <tchar.h>
 #include <Lmcons.h>
 #include <sys/stat.h>
 #include <string>
+#include <limits>
+#define WIN32_LEAN_AND_MEAN 
+#define CREATE_THREAD_ACCESS (PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ) 
 
-#pragma comment(lib,"Version.lib")
-
+#pragma comment(lib, "Version.lib")
+#pragma comment(lib, "Shlwapi.lib")
 
 #include "convert.hpp"
 
 #define CATCH catch(const std::exception& ex)
-#define WAIT_FOR_ENTER() std::getline(std::cin, std::string())
+#define WAIT_FOR_ENTER() std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 
 
@@ -169,11 +173,6 @@ namespace Marox
 			ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
 			return ss.str();
 		}
-		/// <summary>
-		/// Randomizes a collection or an array
-		/// </summary>
-		/// <param name="_collection">Collection (having <c>begin()</c> and <c>end()</c>) or an array</param>
-
 		bool isInt(const std::string& s)
 		{
 			if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+')))
@@ -196,11 +195,16 @@ namespace Marox
 			int RevisionNumber;
 			//todo: add: parse from string?
 
-			std::string ToString()
+			std::string ToString() const
 			{
 				std::stringstream ss;
 				ss << this->MajorVersion << "." << this->MinorVersion << "." << this->BuildNumber << "." << this->RevisionNumber;
 				return ss.str();
+			}
+
+			explicit operator std::string() const 
+			{
+				return this->ToString();
 			}
 
 			static FileVersionInfo* Parse(const std::string& str)
@@ -300,10 +304,15 @@ namespace Marox
 					return false;
 			}
 
+			friend std::ostream& operator<< (std::ostream& stream, const FileVersionInfo& fvi)
+			{
+				stream << fvi.ToString();
+				return stream;
+			}
+
 			//todo: sprawdziæ operatory!!!
 
 		};
-
 
 		std::string getComputerName()
 		{
@@ -392,6 +401,69 @@ namespace Marox
 
 			return p;
 		}
+		DWORD getTargetThreadIDFromProcessName(PCWSTR _processName)
+		{
+			PROCESSENTRY32 pe;
+			HANDLE thSnapShot;
+			BOOL retval, ProcFound = false;
+
+			thSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+			if (thSnapShot == INVALID_HANDLE_VALUE)
+			{
+				return NULL;
+			}
+
+			pe.dwSize = sizeof(PROCESSENTRY32);
+
+			retval = Process32First(thSnapShot, &pe);
+			while (retval)
+			{
+				if (StrStrI(pe.szExeFile, _processName))
+				{
+					return pe.th32ProcessID;
+				}
+				retval = Process32Next(thSnapShot, &pe);
+			}
+			return NULL;
+		}
+
+		BOOL Inject(DWORD pID, const char * DLL_NAME)
+		{
+			HANDLE Proc;
+			HMODULE hLib;
+			char buf[50] = { 0 };
+			LPVOID RemoteString, LoadLibAddy;
+
+			if (!pID)
+				return false;
+
+			Proc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pID);
+			if (!Proc)
+			{
+				return false;
+			}
+
+		
+
+			LoadLibAddy = (LPVOID)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryW");
+
+			// Allocate space in the process for our DLL 
+			RemoteString = (LPVOID)VirtualAllocEx(Proc, NULL, strlen(DLL_NAME), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+
+			// Write the string name of our DLL in the memory allocated 
+			WriteProcessMemory(Proc, (LPVOID)RemoteString, DLL_NAME, strlen(DLL_NAME), NULL);
+
+			// Load our DLL 
+			CreateRemoteThread(Proc, NULL, NULL, (LPTHREAD_START_ROUTINE)LoadLibAddy, (LPVOID)RemoteString, NULL, NULL);
+
+			CloseHandle(Proc);
+			return true;
+		}
+
+
+
+
+
 		bool ifFileExists(const std::string& filename)
 		{
 			/*if (FILE *file = fopen(filename.c_str(), "r")) {
@@ -465,6 +537,39 @@ namespace Marox
 		{
 			std::ifstream in(fileName, std::ifstream::ate | std::ifstream::binary);
 			return in.tellg();
+		}
+		std::string getFullFilePath(const std::string& fileName)
+		{
+			wchar_t buf[MAX_PATH] = { 0 };
+			GetFullPathName(Marox::Tools::Convert::string_to_wstring(fileName).c_str(), MAX_PATH, buf, NULL);
+
+			std::wstring ws;
+			for (size_t i = 0; i < MAX_PATH; i++)
+			{
+				if (buf[i] != '\0')
+				{
+					ws += buf[i];
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			return Marox::Tools::Convert::wstring_to_string(ws);
+		}
+		template<typename Iterator, typename T>
+		int getIndexOfElement(Iterator _first, Iterator _last, const T& value)
+		{
+			auto it = std::find(_first, _last, value);
+			if (it != _last)
+			{
+				return std::distance(_first, it);
+			}
+			else
+			{
+				return -1;
+			}
 		}
 
 

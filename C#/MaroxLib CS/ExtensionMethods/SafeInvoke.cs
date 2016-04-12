@@ -9,7 +9,7 @@ namespace Marox
 {
     namespace ExtensionMethods
     {
-        public static class ExtensionMethod
+        public static partial class ExtensionMethod
         {
             public static TResult SafeInvoke<T, TResult>(this T isi, Func<T, TResult> call) where T : ISynchronizeInvoke
             {
