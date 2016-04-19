@@ -1,0 +1,12 @@
+#ifndef QMAROXLIB_GLOBAL_H
+#define QMAROXLIB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(QMAROXLIB_LIBRARY)
+#  define QMAROXLIBSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define QMAROXLIBSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // QMAROXLIB_GLOBAL_H

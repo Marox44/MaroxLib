@@ -1,0 +1,56 @@
+.m_display_i {
+	display: inline !important;
+}
+
+.m_display_ib {
+	display: inline-block !important;
+}
+
+.m_display_b {
+	display: block !important;
+}
+
+.m_display_flex {
+	display: flex !important;
+}
+
+
+.m_pr {
+	position: relative !important;
+}
+
+
+
+
+.alert {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.alert .alert_left *,
+.alert button span {
+	vertical-align: middle;
+}
+
+.alert button,
+#id1 .alert_left {
+	flex: 0 0 auto;
+}
+
+.alert .alert_left {
+	order: 1;
+}
+
+.alert .alert_left > i:first-child,
+.alert .alert_left > span:first-child {
+	margin-right: 10px;
+}
+
+.alert button {
+	order: 2;
+}
+
+.alert i:before {
+	vertical-align: middle;
+}
