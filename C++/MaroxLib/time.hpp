@@ -31,6 +31,7 @@ namespace Marox
 				{
 					this->T = std::chrono::high_resolution_clock::now();
 				}
+				Timer(const Timer&) = delete;
 				~Timer() = default;
 				/// <summary>
 				/// Get time elapsed between two <c><see cref="Timer"/>s</c>

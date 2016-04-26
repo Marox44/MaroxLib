@@ -8,9 +8,12 @@ namespace Marox
 {
 	namespace Tools
 	{
-		namespace MD5
+		class MD5 final
 		{
-			std::string hashString(const char* str)
+		public:
+			MD5() = delete;
+
+			static std::string hashString(const char* str)
 			{
 				_MD5 md5;
 				char* result = md5.digestString((char*)str);
@@ -18,7 +21,7 @@ namespace Marox
 				std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 				return s;
 			}
-			std::string hashFile(const std::string& file)
+			static std::string hashFile(const std::string& file)
 			{
 				_MD5 md5;
 				char* result = md5.digestFile((char*)file.c_str());
@@ -26,7 +29,7 @@ namespace Marox
 				std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 				return s;
 			}
-			std::string hashMemory(BYTE* memory, int size)
+			static std::string hashMemory(BYTE* memory, int size)
 			{
 				_MD5 md5;
 				char* result = md5.digestMemory(memory, size);

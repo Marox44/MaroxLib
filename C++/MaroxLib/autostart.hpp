@@ -4,8 +4,6 @@
 
 namespace Marox
 {
-	namespace Tools
-	{
 		namespace WinAPI
 		{
 			namespace Autostart
@@ -101,5 +99,5 @@ namespace Marox
 				}
 			}
 		}
-	}
+
 }

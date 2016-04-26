@@ -15,8 +15,6 @@
 namespace Marox
 {
 
-	namespace Tools
-	{
 		namespace WinAPI
 		{
 			struct FileVersionInfo
@@ -24,7 +22,7 @@ namespace Marox
 				FileVersionInfo(int _MajorVersion, int _MinorVersion, int _BuildNumber, int _RevisionNumber) : MajorVersion(_MajorVersion), MinorVersion(_MinorVersion), BuildNumber(_BuildNumber), RevisionNumber(_RevisionNumber)
 				{}
 
-				//todo: const & zrobiæ operator= !
+				//todo: const & zrobiï¿½ operator= !
 				int MajorVersion;
 				int MinorVersion;
 				int BuildNumber;
@@ -146,7 +144,7 @@ namespace Marox
 					return stream;
 				}
 
-				//todo: sprawdziæ operatory!!!
+				//todo: sprawdziï¿½ operatory!!!
 
 			};
 
@@ -190,6 +188,6 @@ namespace Marox
 				return nullptr;
 			}
 		}
-	}
+
 
 }
