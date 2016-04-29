@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alert.cs" />
+    <Compile Include="DLL_Loader.cs" />
     <Compile Include="ExtensionMethods\DeepCopyObject.cs" />
     <Compile Include="ExtensionMethods\List.cs" />
     <Compile Include="ExtensionMethods\SafeInvoke.cs" />
