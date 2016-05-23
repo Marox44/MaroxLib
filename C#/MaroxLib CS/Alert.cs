@@ -8,10 +8,10 @@ namespace Marox
 {
     public static class Alert
     {
-        public static void Error(string text)
+        public static void Error(string text, string caption = "Error")
         {
             MessageBox.Show(text,
-       "Error",
+       caption,
        MessageBoxButtons.OK,
        MessageBoxIcon.Error,
        MessageBoxDefaultButton.Button1);
